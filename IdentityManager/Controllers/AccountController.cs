@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using IdentityManager.Models;
 using Microsoft.AspNetCore.Mvc;
 
 namespace IdentityManager.Controllers
@@ -11,6 +12,13 @@ namespace IdentityManager.Controllers
         public IActionResult Index()
         {
             return View();
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> Register()
+        {
+            RegisterViewModel registerViewModel = new RegisterViewModel();
+            return View(registerViewModel);
         }
     }
 }
