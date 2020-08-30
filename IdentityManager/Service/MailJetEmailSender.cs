@@ -45,7 +45,7 @@ namespace IdentityManager.Service
         new JObject {
          {
           "Email",
-          "benspark01@protonmail.com"
+          email
          }, {
           "Name",
           "Ben"
