@@ -61,17 +61,19 @@ namespace IdentityManager.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Login(LoginViewModel model)
         {
-            //if (ModelState.IsValid)
-            //{
-            //    var user = new ApplicationUser { UserName = model.Email, Email = model.Email, Name = model.Name };
-            //    var result = await _userManager.CreateAsync(user, model.Password);
-            //    if (result.Succeeded)
-            //    {
-            //        await _signInManager.SignInAsync(user, isPersistent: false);
-            //        return RedirectToAction("Index", "Home");
-            //    }
-            //    AddErrors(result);
-            //}
+            if (ModelState.IsValid)
+            {
+                var result = await _signInManager.PasswordSignInAsync(model.Email, model.Password, model.RememberMe, lockoutOnFailure: false);
+                if (result.Succeeded)
+                {
+                    return RedirectToAction("Index", "Home");
+                }
+                else
+                {
+                    ModelState.AddModelError(string.Empty, "Invalid login attempt.");
+                    return View(model);
+                }
+            }
 
 
             return View(model);
