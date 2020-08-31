@@ -39,6 +39,12 @@ namespace IdentityManager
                 opt.Lockout.MaxFailedAccessAttempts = 5;
                 opt.SignIn.RequireConfirmedAccount = true;
             });
+
+            services.AddAuthentication().AddFacebook(options =>
+            {
+                options.AppId = "2797980420437778";
+                options.AppSecret = "abe6f05cc42cb58fef1e689b54a04011";
+            });
             services.AddControllersWithViews();
         }
 
