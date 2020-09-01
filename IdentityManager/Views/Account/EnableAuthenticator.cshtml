@@ -1,0 +1,17 @@
+﻿@model TwoFactorAuthenticationViewModel
+
+<p>
+    Please enter the code below in your autheticator App.
+</p>
+<p>
+    @Model.Token
+</p>
+
+<form method="post">
+    <input hidden asp-for="Token" />
+    <div class="form-group">
+        Enter Code : <input type="text" class="form-control" asp-for="Code" />
+
+    </div>
+    <button type="submit" class="btn btn-primary">Submit</button>
+</form>
