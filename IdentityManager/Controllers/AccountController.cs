@@ -327,8 +327,13 @@ namespace IdentityManager.Controllers
             {
                 return View("Error");
             }
+            ViewData["ReturnUrl"] = returnUrl;
             return View(new VerifyAuthenticatorViewModel { ReturnUrl = returnUrl, RememberMe = rememberMe });
         }
+
+
+
+
 
         private void AddErrors(IdentityResult result)
         {
