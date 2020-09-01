@@ -346,7 +346,7 @@ namespace IdentityManager.Controllers
                 return View(model);
             }
 
-            var result = await _signInManager.TwoFactorAuthenticatorSignInAsync(model.Code, model.RememberMe, rememberClient: true);
+            var result = await _signInManager.TwoFactorAuthenticatorSignInAsync(model.Code, model.RememberMe, rememberClient: false);
 
             if (result.Succeeded)
             {
