@@ -12,5 +12,6 @@ namespace IdentityManager.Models
 
         //used to register / signup
         public string Token { get; set; }
+        public string QRCodeUrl { get; set; }
     }
 }
