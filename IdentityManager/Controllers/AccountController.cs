@@ -214,6 +214,7 @@ namespace IdentityManager.Controllers
         [HttpGet]
         public async Task<IActionResult> ExternalLoginCallback(string returnurl = null,string remoteError=null)
         {
+            returnurl = returnurl ?? Url.Content("~/");
             if (remoteError != null)
             {
                 ModelState.AddModelError(string.Empty, $"Error from external provider: {remoteError}");
@@ -245,6 +246,38 @@ namespace IdentityManager.Controllers
             }
         }
 
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> ExternalLoginConfirmation(ExternalLoginConfirmationViewModel model, string returnurl = null)
+        {
+            returnurl = returnurl ?? Url.Content("~/");
+
+            if (ModelState.IsValid)
+            {
+                //get the info about the user from external login provider
+                var info = await _signInManager.GetExternalLoginInfoAsync();
+                if (info == null)
+                {
+                    return View("Error");
+                }
+                var user = new ApplicationUser { UserName = model.Email, Email = model.Email, Name = model.Name };
+                var result = await _userManager.CreateAsync(user);
+                if (result.Succeeded)
+                {
+                    result = await _userManager.AddLoginAsync(user, info);
+                    if (result.Succeeded)
+                    {
+                        await _signInManager.SignInAsync(user, isPersistent: false);
+                        await _signInManager.UpdateExternalAuthenticationTokensAsync(info);
+                        return LocalRedirect(returnurl);
+                    }
+                }
+                AddErrors(result);
+            }
+            ViewData["ReturnUrl"] = returnurl;
+            return View(model);
+        }
 
         private void AddErrors(IdentityResult result)
         {
