@@ -13,9 +13,18 @@
         }
         else
         {
-        <a asp-action="EnableAuthenticator" asp-controller="Account">Setup Two Factor Auth</a>
+            <a asp-action="EnableAuthenticator" asp-controller="Account">Setup Two Factor Auth</a>
         }
         <br /><br />
+
+        @if (User.IsInRole("Admin"))
+        {
+            <h2>Your role is - Admin</h2>
+        }
+        else
+        {
+            <h2>Your role is - User</h2>
+        }
     }
 
 
