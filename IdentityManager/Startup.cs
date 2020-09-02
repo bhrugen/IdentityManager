@@ -37,8 +37,12 @@ namespace IdentityManager
                 opt.Password.RequireLowercase = true;
                 opt.Lockout.DefaultLockoutTimeSpan = TimeSpan.FromSeconds(30);
                 opt.Lockout.MaxFailedAccessAttempts = 5;
+                
             });
-
+            services.ConfigureApplicationCookie(opt =>
+            {
+                opt.AccessDeniedPath = new Microsoft.AspNetCore.Http.PathString("/Home/Accessdenied");
+            });
             services.AddAuthentication().AddFacebook(options =>
             {
                 options.AppId = "2797980420437778";
