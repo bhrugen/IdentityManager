@@ -127,5 +127,19 @@ namespace IdentityManager.Controllers
 
         }
 
+        [HttpPost]
+        public IActionResult Delete(string userId)
+        {
+            var objFromDb = _db.ApplicationUser.FirstOrDefault(u => u.Id == userId);
+            if (objFromDb == null)
+            {
+                return NotFound();
+            }
+            _db.ApplicationUser.Remove(objFromDb);
+            _db.SaveChanges();
+            TempData[SD.Success] = "User deleted successfully.";
+            return RedirectToAction(nameof(Index));
+        }
+
     }
 }
