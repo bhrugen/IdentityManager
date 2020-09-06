@@ -41,7 +41,29 @@ namespace IdentityManager.Controllers
 
         }
 
+        public IActionResult Edit(string userId)
+        {
+            var objFromDb = _db.ApplicationUser.FirstOrDefault(u=>u.Id==userId);
+            if (objFromDb == null)
+            {
+                return NotFound();
+            }
+            var userRole = _db.UserRoles.ToList();
+            var roles = _db.Roles.ToList();
+            var role = userRole.FirstOrDefault(u => u.UserId == objFromDb.Id);
+            if (role != null)
+            {
+                objFromDb.RoleId = roles.FirstOrDefault(u => u.Id == role.RoleId).Id;
+            }
+            objFromDb.RoleList = _db.Roles.Select(u => new Microsoft.AspNetCore.Mvc.Rendering.SelectListItem
+            {
+                Text = u.Name,
+                Value = u.Id
+            });
+            return View(objFromDb);
+        }
 
-    
+
+
     }
 }
