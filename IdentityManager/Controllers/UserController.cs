@@ -168,6 +168,23 @@ namespace IdentityManager.Controllers
 
             return View(model);
         }
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> ManageUserClaims(UserClaimsViewModel userClaimsViewModel)
+        {
+            IdentityUser user = await _userManager.FindByIdAsync(userClaimsViewModel.UserId);
 
+            if (user == null)
+            {
+                return NotFound();
+            }
+
+            var result = await _userManager.AddClaimsAsync(user,
+                userClaimsViewModel.Claims.Where(c => c.IsSelected).Select(c => new Claim(c.ClaimType, c.IsSelected.ToString()))
+                );
+
+            TempData[SD.Error] = "Claims updated successfully";
+            return RedirectToAction(nameof(Index));
+        }
     }
 }
