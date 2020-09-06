@@ -152,6 +152,8 @@ namespace IdentityManager.Controllers
                 return NotFound();
             }
 
+            var existingUserClaims = await _userManager.GetClaimsAsync(user);
+
             var model = new UserClaimsViewModel()
             {
                 UserId = userId
@@ -163,6 +165,10 @@ namespace IdentityManager.Controllers
                 {
                     ClaimType = claim.Type
                 };
+                if (existingUserClaims.Any(c => c.Type == claim.Type))
+                {
+                    userClaim.IsSelected = true;
+                }
                 model.Claims.Add(userClaim);
             }
 
@@ -179,11 +185,26 @@ namespace IdentityManager.Controllers
                 return NotFound();
             }
 
-            var result = await _userManager.AddClaimsAsync(user,
+            var claims = await _userManager.GetClaimsAsync(user);
+            var result = await _userManager.RemoveClaimsAsync(user,claims);
+
+            if (!result.Succeeded)
+            {
+                TempData[SD.Error] = "Error while removing claims";
+                return View(userClaimsViewModel);
+            }
+
+            result = await _userManager.AddClaimsAsync(user,
                 userClaimsViewModel.Claims.Where(c => c.IsSelected).Select(c => new Claim(c.ClaimType, c.IsSelected.ToString()))
                 );
 
-            TempData[SD.Error] = "Claims updated successfully";
+            if (!result.Succeeded)
+            {
+                TempData[SD.Error] = "Error while adding claims";
+                return View(userClaimsViewModel);
+            }
+
+            TempData[SD.Success] = "Claims updated successfully";
             return RedirectToAction(nameof(Index));
         }
     }
