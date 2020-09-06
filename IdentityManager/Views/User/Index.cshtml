@@ -40,6 +40,23 @@
                                     Edit
                                 </a>
 
+                                @if (item.LockoutEnd == null || item.LockoutEnd < DateTime.Now)
+                                {
+                                    //we want to show them the option to lock
+                                    <button asp-action="LockUnlock" asp-route-userId="@item.Id" class="btn btn-success text-white"
+                                            style="cursor:pointer">
+                                        <span>&nbsp; Lock &nbsp;</span>
+                                    </button>
+                                }
+                                else
+                                {
+                                    //we want to show them the option to unlock
+                                    <button asp-action="LockUnlock" asp-route-userId="@item.Id" class="btn btn-warning text-white"
+                                            style="cursor:pointer">
+                                        <span>UnLock</span>
+                                    </button>
+                                }
+
                                 <button type="submit" onclick="return confirm('Are you sure you want to delete this?')"
                                         class="btn btn-danger">
                                     DELETE
