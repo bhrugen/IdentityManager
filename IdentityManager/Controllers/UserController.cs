@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Claims;
 using System.Threading.Tasks;
 using IdentityManager.Data;
 using IdentityManager.Models;
@@ -139,6 +140,33 @@ namespace IdentityManager.Controllers
             _db.SaveChanges();
             TempData[SD.Success] = "User deleted successfully.";
             return RedirectToAction(nameof(Index));
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> ManageUserClaims(string userId)
+        {
+            IdentityUser user = await _userManager.FindByIdAsync(userId);
+
+            if (user == null)
+            {
+                return NotFound();
+            }
+
+            var model = new UserClaimsViewModel()
+            {
+                UserId = userId
+            };
+
+            foreach(Claim claim in ClaimStore.claimsList)
+            {
+                UserClaim userClaim = new UserClaim
+                {
+                    ClaimType = claim.Type
+                };
+                model.Claims.Add(userClaim);
+            }
+
+            return View(model);
         }
 
     }
