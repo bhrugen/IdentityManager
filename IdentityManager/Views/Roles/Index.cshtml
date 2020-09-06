@@ -1,5 +1,39 @@
-﻿@*
-    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
-*@
-@{
-}
+﻿@model IEnumerable<Microsoft.AspNetCore.Identity.IdentityRole>
+<br />
+<div class="row">
+    <div class="col-6">
+        <h2 class="text-primary">Roles List </h2>
+    </div>
+    <div class="col-6 text-right">
+        <a asp-action="Upsert" asp-controller="Roles" class="btn btn-primary">Create New Role</a>
+    </div>
+</div>
+<div class="p-4 border rounded">
+    @if (Model.Any())
+    {
+        <table class="table table-striped border">
+            <tr class="table-secondary">
+                <th>
+                    ID
+                </th>
+                <th>
+                    Name
+                </th>
+                <th></th>
+            </tr>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>
+                        @item.Id
+                    </td>
+                    <td>
+                        @item.Name
+                    </td>
+                    <td>
+                    </td>
+                </tr>
+            }
+        </table>
+    }
+</div>
