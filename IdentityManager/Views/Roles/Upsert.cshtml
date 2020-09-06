@@ -1,0 +1,60 @@
+﻿@model Microsoft.AspNetCore.Identity.IdentityRole
+
+@{ 
+    var title = "Create Role";
+}
+
+<form method="post">
+    @if(Model!=null && !String.IsNullOrEmpty(Model.Id))
+    {
+        title = "Edit Role";
+        <input asp-for="@Model.Id" hidden />
+    }
+
+    <div class="border p-3 bg-white">
+        <div class="form-group row">
+            <h2 class="text-info pl-3">@title</h2>
+        </div>
+        <div class="row">
+            <div class="col-8">
+                <div class="form-group row py-2 ">
+                    <div class="col-4">
+                        <label asp-for="Id"></label>
+                    </div>
+                    <div class="col-8">
+                        <input asp-for="Id" readonly class="form-control" />
+                    </div>
+                </div>
+                <div class="form-group row py-2 ">
+                    <div class="col-4">
+                        <label asp-for="Name"></label>
+                    </div>
+                    <div class="col-8">
+                        <input asp-for="Name" class="form-control" autocomplete="off" />
+                        <span asp-validation-for="Name" class="text-danger"></span>
+                    </div>
+                </div>
+                <div class="form-group row py-2 ">
+                    <div class="col-8 offset-4 row">
+                        <div class="col">
+                            @if (Model != null && !String.IsNullOrEmpty(Model.Id))
+                            {
+                                //update
+                                <input type="submit" class="btn btn-info w-100" value="Update" />
+                            }
+                            else
+                            {
+                                //create
+                                <input type="submit" class="btn btn-primary w-100" value="Create" />
+                            }
+                        </div>
+                        <div class="col">
+                            <a asp-action="Index" class="btn btn-success w-100">Back</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</form>
