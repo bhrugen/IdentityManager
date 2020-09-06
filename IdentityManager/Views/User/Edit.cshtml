@@ -1,0 +1,34 @@
+﻿@model ApplicationUser
+    <h1 class="text-info">Edit User</h1>
+
+<div class="row">
+    <div class="col-md-8">
+        <form method="post" asp-action="Edit">
+            <input asp-for="@Model.Id" hidden />
+            <hr />
+            <div asp-validation-summary="All" class="text-danger"></div>
+
+            <div class="form-group">
+                <label asp-for="Name"></label>
+                <input asp-for="Name" class="form-control" />
+                <span asp-validation-for="Name" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="Email"></label>
+                <input asp-for="Email" readonly class="form-control" />
+                <input asp-for="Email" hidden />
+            </div>
+            <div class="form-group">
+                <label asp-for="RoleId"></label>
+                <select asp-for="RoleId" asp-items="@Model.RoleList" class="form-control">
+                    <option disabled selected>--Select Role--</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <button type="submit" class="btn btn-success">Update</button>
+                <a asp-action="Index" class="btn btn-warning" style="width:auto">Back to User</a>
+            </div>
+        </form>
+    </div>
+</div>
