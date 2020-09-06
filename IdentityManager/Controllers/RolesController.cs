@@ -46,5 +46,32 @@ namespace IdentityManager.Controllers
             
             
         }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Upsert(IdentityRole roleObj)
+        {
+            if(await _roleManager.RoleExistsAsync(roleObj.Name))
+            {
+                //error
+            }
+            if (string.IsNullOrEmpty(roleObj.Id))
+            {
+                //create
+                await _roleManager.CreateAsync(new IdentityRole() { Name = roleObj.Name });
+            }
+            else
+            {
+                //update
+                var objRoleFromDb = _db.Roles.FirstOrDefault(u => u.Id == roleObj.Id);
+                objRoleFromDb.Name = roleObj.Name;
+                objRoleFromDb.NormalizedName = roleObj.Name.ToUpper();
+                var result = await _roleManager.UpdateAsync(objRoleFromDb);
+
+            }
+            return RedirectToAction(nameof(Index));
+
+        }
+
     }
 }
