@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using IdentityManager.Authorize;
 using IdentityManager.Data;
 using IdentityManager.Service;
 using Microsoft.AspNetCore.Authorization;
@@ -61,6 +62,7 @@ namespace IdentityManager
 
                 options.AddPolicy("Admin_Create_Edit_DeleteAccess_OR_SuperAdmin", policy => policy.RequireAssertion(context =>
                 AuthorizeAdminWithClaimsOrSuperAdmin(context)));
+                options.AddPolicy("OnlySuperAdminChecker", policy => policy.Requirements.Add(new OnlySuperAdminChecker()));
             });
 
             services.AddControllersWithViews();

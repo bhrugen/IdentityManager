@@ -4,6 +4,7 @@ using System.Linq;
 using System.Runtime.Serialization;
 using System.Threading.Tasks;
 using IdentityManager.Data;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 
@@ -48,11 +49,12 @@ namespace IdentityManager.Controllers
         }
 
         [HttpPost]
+        [Authorize(Policy = "OnlySuperAdminChecker")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Upsert(IdentityRole roleObj)
         {
             if(await _roleManager.RoleExistsAsync(roleObj.Name))
-            {
+            { 
                 //error
                 TempData[SD.Error] = "Role already exists.";
                 return RedirectToAction(nameof(Index));
@@ -83,6 +85,7 @@ namespace IdentityManager.Controllers
 
 
         [HttpPost]
+        [Authorize(Policy = "OnlySuperAdminChecker")] 
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Delete(string id)
         {
