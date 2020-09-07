@@ -29,6 +29,21 @@
                         <li class="nav-item">
                             <a class="nav-link text-dark" asp-controller="Roles" asp-action="Index">Roles</a>
                         </li>
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                Access Checker
+                            </a>
+                            <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                                <a class="dropdown-item" asp-controller="AccessChecker" asp-action="AllAccess">All Access</a>
+                                <a class="dropdown-item" asp-controller="AccessChecker" asp-action="AuthorizedAccess">Authorized Access</a>
+                                <a class="dropdown-item" asp-controller="AccessChecker" asp-action="UserAccess">User Access</a>
+                                <a class="dropdown-item" asp-controller="AccessChecker" asp-action="AdminAccess">Admin Access</a>
+                                <a class="dropdown-item" asp-controller="AccessChecker" asp-action="Admin_CreateAccess">Admin - Create only Claim Access</a>
+                                <a class="dropdown-item" asp-controller="AccessChecker" asp-action="Admin_Create_Edit_DeleteAccess">Admin - Create,Edit & Delete Claim Access</a>
+                                <a class="dropdown-item" asp-controller="AccessChecker" asp-action="Admin_Create_Edit_DeleteAccess_SuperAdmin">Admin - Create,Edit & Delete Claim Access || Super Admin</a>
+                                <a class="dropdown-item" asp-controller="AccessChecker" asp-action="OnlyBhrugen">Only Bhrugen</a>
+                            </div>
+                        </li>
                     </ul>
                 </div>
             </div>
