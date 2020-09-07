@@ -73,6 +73,7 @@ namespace IdentityManager.Controllers
             return View();
         }
 
+        [Authorize(Policy = "AdminWithMoreThan1000Days")]
         public IActionResult OnlyBhrugen()
         {
             return View();
