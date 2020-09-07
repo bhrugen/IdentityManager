@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using IdentityManager.Data;
 using IdentityManager.Service;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
@@ -58,12 +59,8 @@ namespace IdentityManager
                 .RequireClaim("edit", "True")
                 .RequireClaim("Delete", "True"));
 
-                options.AddPolicy("Admin_Create_Edit_DeleteAccess_OR_SuperAdmin", policy => policy.RequireAssertion(context => (
-                        context.User.IsInRole("Admin") && context.User.HasClaim(c=>c.Type=="Create" && c.Value=="True")
-                        && context.User.HasClaim(c => c.Type == "Edit" && c.Value == "True")
-                        && context.User.HasClaim(c => c.Type == "Delete" && c.Value == "True")
-                    ) || context.User.IsInRole("SuperAdmin")
-                ));
+                options.AddPolicy("Admin_Create_Edit_DeleteAccess_OR_SuperAdmin", policy => policy.RequireAssertion(context =>
+                AuthorizeAdminWithClaimsOrSuperAdmin(context)));
             });
 
             services.AddControllersWithViews();
@@ -97,6 +94,14 @@ namespace IdentityManager
                     pattern: "{controller=Home}/{action=Index}/{id?}");
                 endpoints.MapRazorPages();
             });
+        }
+
+        private bool AuthorizeAdminWithClaimsOrSuperAdmin(AuthorizationHandlerContext context)
+        {
+            return (context.User.IsInRole("Admin") && context.User.HasClaim(c => c.Type == "Create" && c.Value == "True")
+                        && context.User.HasClaim(c => c.Type == "Edit" && c.Value == "True")
+                        && context.User.HasClaim(c => c.Type == "Delete" && c.Value == "True")
+                    ) || context.User.IsInRole("SuperAdmin");
         }
     }
 }
