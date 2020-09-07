@@ -57,6 +57,13 @@ namespace IdentityManager
                 options.AddPolicy("Admin_Create_Edit_DeleteAccess", policy => policy.RequireRole("Admin").RequireClaim("create", "True")
                 .RequireClaim("edit", "True")
                 .RequireClaim("Delete", "True"));
+
+                options.AddPolicy("Admin_Create_Edit_DeleteAccess_OR_SuperAdmin", policy => policy.RequireAssertion(context => (
+                        context.User.IsInRole("Admin") && context.User.HasClaim(c=>c.Type=="Create" && c.Value=="True")
+                        && context.User.HasClaim(c => c.Type == "Edit" && c.Value == "True")
+                        && context.User.HasClaim(c => c.Type == "Delete" && c.Value == "True")
+                    ) || context.User.IsInRole("SuperAdmin")
+                ));
             });
 
             services.AddControllersWithViews();
