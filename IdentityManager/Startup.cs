@@ -48,6 +48,12 @@ namespace IdentityManager
                 options.AppId = "2797980420437778";
                 options.AppSecret = "abe6f05cc42cb58fef1e689b54a04011";
             });
+
+            services.AddAuthorization(options =>
+            {
+                options.AddPolicy("Admin", policy => policy.RequireRole("Admin"));
+            });
+
             services.AddControllersWithViews();
             services.AddRazorPages();
         }
