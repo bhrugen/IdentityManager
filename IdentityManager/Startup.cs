@@ -64,7 +64,7 @@ namespace IdentityManager
                 AuthorizeAdminWithClaimsOrSuperAdmin(context)));
                 options.AddPolicy("OnlySuperAdminChecker", policy => policy.Requirements.Add(new OnlySuperAdminChecker()));
             });
-
+            services.AddScoped<INumberOfDaysForAccount, NumberOfDaysForAccount>();
             services.AddControllersWithViews();
             services.AddRazorPages();
         }

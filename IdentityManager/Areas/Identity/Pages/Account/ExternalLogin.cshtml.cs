@@ -125,7 +125,7 @@ namespace IdentityManager.Areas.Identity.Pages.Account
 
             if (ModelState.IsValid)
             {
-                var user = new ApplicationUser { UserName = Input.Email, Email = Input.Email, Name = Input.Name };
+                var user = new ApplicationUser { UserName = Input.Email, Email = Input.Email, Name = Input.Name, DateCreated=DateTime.Now };
 
                 var result = await _userManager.CreateAsync(user);
                 if (result.Succeeded)
