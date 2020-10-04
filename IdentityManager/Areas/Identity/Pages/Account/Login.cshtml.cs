@@ -89,7 +89,14 @@ namespace IdentityManager.Areas.Identity.Pages.Account
                     var claim = await _userManager.GetClaimsAsync(user);
                     if (claim.Count > 0)
                     {
-                        await _userManager.RemoveClaimAsync(user, claim.FirstOrDefault(u => u.Type == "FirstName"));
+                        try
+                        {
+                            await _userManager.RemoveClaimAsync(user, claim.FirstOrDefault(u => u.Type == "FirstName"));
+                        }
+                        catch(Exception)
+                        {
+
+                        }
                     }
                     await _userManager.AddClaimAsync(user, new System.Security.Claims.Claim("FirstName", user.Name));
 
