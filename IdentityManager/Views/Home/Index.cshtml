@@ -1,5 +1,11 @@
-﻿@{
+﻿@inject Microsoft.AspNetCore.Authorization.IAuthorizationService Authoriation
+
+@{
     ViewData["Title"] = "Home Page";
+}
+
+@{
+    var isAdmin = await Authoriation.AuthorizeAsync(User, null, "Admin");
 }
 
 <div class="text-center">
@@ -17,13 +23,13 @@
         }
         <br /><br />
 
-        @if (User.IsInRole("Admin"))
+        @if (isAdmin.Succeeded)
         {
             <h2>Your role is - Admin</h2>
         }
         else
         {
-            <h2>Your role is - User</h2>
+            <h2>Your role is - Non Admin</h2>
         }
     }
 
